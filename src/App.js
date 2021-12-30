@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Vi from './images/Vi.png';
-import Jayce from './images/Jayce.png';
 import Jinx from './images/Jinx.png';
 import blueCandy from './images/blue-candy.png'
 import greenCandy from './images/green-candy.png'
