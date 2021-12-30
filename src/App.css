@@ -22,3 +22,49 @@
   width: 7vw;
   height: 9vh;
 }
+
+@media (max-width: 1080px) {
+  .App {
+    padding: 10% 20%;
+  }
+
+  .board img {
+    width: 8vw;
+    height: 10vh;
+  }
+}
+
+@media (max-width: 992px) {
+  .board img {
+    width: 7vw;
+    height: 8vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .board {
+    width: 63vw;
+    height: 63vh;
+  }
+
+  .board img {
+    width: 7vw;
+    height: 7vh;
+  }
+}
+
+@media (max-width: 450px) {
+  .App {
+    padding: 10% 10%;
+  }
+
+  .board {
+    width: 60vw;
+    height: 63vh;
+  }
+
+  .board img {
+    width: 7vw;
+    height: 7vh;
+  }
+}

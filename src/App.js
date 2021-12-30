@@ -138,6 +138,7 @@ const App = () => {
         } else {
             currentCandyArrangement[candyBeingReplacedId] = candyBeingReplaced.style.backgroundColor;
             currentCandyArrangement[candyBeingDraggedId] = candyBeingDragged.style.backgroundColor;
+            setCurrentCandyArrangement([...currentCandyArrangement]);
         }
     }
 
