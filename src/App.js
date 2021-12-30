@@ -13,25 +13,29 @@ const candyColors = [
 
 const App = () => {
 
-  const [currentCandyArrangement, setCurrentCandyArrangement] = useState([]);
+    const [currentCandyArrangement, setCurrentCandyArrangement] = useState([]);
+    const [candyBeingDragged, setCandyBeingDragged] = useState(null);
+    const [candyBeingReplaced, setCandyBeingReplaced] = useState(null);
 
-  const createBoard = () => {
+    const [currentScore, setCurrentScore] = useState();
 
-    const randomCandyArrangement = [];
-    for (let i = 0; i < boardWidth * boardWidth; i++) {
-      const randomCandy = candyColors[Math.floor(Math.random() * candyColors.length)];
-      randomCandyArrangement.push(randomCandy);
+    const createBoard = () => {
+        const randomCandyArrangement = [];
+            for (let i = 0; i < boardWidth * boardWidth; i++) {
+                const randomCandy = candyColors[Math.floor(Math.random() * candyColors.length)];
+                randomCandyArrangement.push(randomCandy);
+            }
+            setCurrentCandyArrangement(randomCandyArrangement);
     }
-    setCurrentCandyArrangement(randomCandyArrangement);
-  }
 
     const checkColumnOfFour = () => {
-        for (let i = 0; i < 39; i++) {
+        for (let i = 0; i <= 39; i++) {
             const columnOfFour = [i, i + boardWidth, i + boardWidth * 2, i + boardWidth * 3];
             const assignedCandy = currentCandyArrangement[i];
 
             if(columnOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy)){
                 columnOfFour.forEach(candy => currentCandyArrangement[candy] = '');
+                return true;
             }
         }
     }
@@ -46,17 +50,19 @@ const App = () => {
 
             if(rowOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy)){
                 rowOfFour.forEach(candy => currentCandyArrangement[candy] = '');
+                return true;
             }
         }
     }
 
     const checkColumnOfThree = () => {
-        for (let i = 0; i < 47; i++) {
+        for (let i = 0; i <= 47; i++) {
             const columnOfThree = [i, i + boardWidth, i + boardWidth * 2];
             const assignedCandy = currentCandyArrangement[i];
 
             if(columnOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy)){
                 columnOfThree.forEach(candy => currentCandyArrangement[candy] = '');
+                return true;
             }
         }
     }
@@ -71,12 +77,13 @@ const App = () => {
 
             if(rowOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy)){
                 rowOfThree.forEach(candy => currentCandyArrangement[candy] = '');
+                return true;
             }
         }
     }
   
     const moveCandyToSquareBelow = () => {
-        for(let i = 0; i < 64 - boardWidth; i++) {
+        for(let i = 0; i <= 55; i++) {
 
             const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
             const isFirstRow = firstRow.includes(i);
@@ -90,6 +97,47 @@ const App = () => {
                 currentCandyArrangement[i + boardWidth] = currentCandyArrangement[i];
                 currentCandyArrangement[i] = '';
             }
+        }
+    }
+
+    //Candy actions
+    const dragStart = (e) => {
+        setCandyBeingDragged(e.target);
+    }
+
+    const dragDrop = (e) => {
+        setCandyBeingReplaced(e.target);
+    }
+
+    const dragEnd = (e) => {
+        const candyBeingDraggedId = parseInt(candyBeingDragged.getAttribute('data-id'));
+        const candyBeingReplacedId = parseInt(candyBeingReplaced.getAttribute('data-id'));
+        console.log(candyBeingDraggedId);
+        console.log(candyBeingReplacedId);
+
+        currentCandyArrangement[candyBeingReplacedId] = candyBeingDragged.style.backgroundColor;
+        currentCandyArrangement[candyBeingDraggedId] = candyBeingReplaced.style.backgroundColor;
+
+        const validMoves = [
+            candyBeingDraggedId - 1,
+            candyBeingDraggedId + 1,
+            candyBeingDraggedId - boardWidth,
+            candyBeingDraggedId + boardWidth
+        ]
+
+        const validMove = validMoves.includes(candyBeingReplacedId);
+        
+        const isColumnOfFour = checkColumnOfFour();
+        const isRowOfFour = checkRowOfFour();
+        const isColumnOfThree = checkColumnOfThree();
+        const isRowOfThree = checkRowOfThree();
+
+        if(candyBeingDraggedId && validMove && (isColumnOfFour || isRowOfFour || isColumnOfThree || isRowOfThree)){
+            setCandyBeingDragged(null);
+            setCandyBeingReplaced(null);
+        } else {
+            currentCandyArrangement[candyBeingReplacedId] = candyBeingReplaced.style.backgroundColor;
+            currentCandyArrangement[candyBeingDraggedId] = candyBeingDragged.style.backgroundColor;
         }
     }
 
@@ -117,6 +165,14 @@ const App = () => {
                 key={index}
                 style={{backgroundColor: candyColor}}
                 alt={candyColor}
+                data-id={index}
+                draggable={true}
+                onDragStart={dragStart}
+                onDragOver={(e) => e.preventDefault()}
+                onDragEnter={(e) => e.preventDefault()}
+                onDragLeave={(e) => e.preventDefault()}
+                onDrop={dragDrop}
+                onDragEnd={dragEnd}
                 />
             ))}
         </div>
