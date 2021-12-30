@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Vi from './images/Vi.png';
+import Jayce from './images/Jayce.png';
+import Jinx from './images/Jinx.png';
+import blueCandy from './images/blue-candy.png'
+import greenCandy from './images/green-candy.png'
+import orangeCandy from './images/orange-candy.png'
+import purpleCandy from './images/purple-candy.png'
+import redCandy from './images/red-candy.png'
+import yellowCandy from './images/yellow-candy.png'
+import blank from './images/blank.png'
 
 const boardWidth = 8;
 const candyColors = [
-  'red',
-  'orange',
-  'yellow',
-  'green',
-  'blue',
-  'purple'
+  Vi,
+  orangeCandy,
+  Jinx,
+  greenCandy,
+  blueCandy,
+  purpleCandy
 ]
 
 const App = () => {
@@ -32,9 +42,10 @@ const App = () => {
         for (let i = 0; i <= 39; i++) {
             const columnOfFour = [i, i + boardWidth, i + boardWidth * 2, i + boardWidth * 3];
             const assignedCandy = currentCandyArrangement[i];
+            const isBlank = currentCandyArrangement[i] === blank;
 
-            if(columnOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy)){
-                columnOfFour.forEach(candy => currentCandyArrangement[candy] = '');
+            if(columnOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                columnOfFour.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
         }
@@ -45,11 +56,12 @@ const App = () => {
             const rowOfFour = [i, i + 1, i + 2];
             const assignedCandy = currentCandyArrangement[i];
             const invalidCandy = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
+            const isBlank = currentCandyArrangement[i] === blank;
 
             if (invalidCandy.includes(i)) continue
 
-            if(rowOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy)){
-                rowOfFour.forEach(candy => currentCandyArrangement[candy] = '');
+            if(rowOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                rowOfFour.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
         }
@@ -59,9 +71,10 @@ const App = () => {
         for (let i = 0; i <= 47; i++) {
             const columnOfThree = [i, i + boardWidth, i + boardWidth * 2];
             const assignedCandy = currentCandyArrangement[i];
+            const isBlank = currentCandyArrangement[i] === blank;
 
-            if(columnOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy)){
-                columnOfThree.forEach(candy => currentCandyArrangement[candy] = '');
+            if(columnOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                columnOfThree.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
         }
@@ -72,11 +85,12 @@ const App = () => {
             const rowOfThree = [i, i + 1, i + 2];
             const assignedCandy = currentCandyArrangement[i];
             const invalidCandy = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64];
+            const isBlank = currentCandyArrangement[i] === blank;
 
             if (invalidCandy.includes(i)) continue
 
-            if(rowOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy)){
-                rowOfThree.forEach(candy => currentCandyArrangement[candy] = '');
+            if(rowOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                rowOfThree.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
         }
@@ -88,14 +102,14 @@ const App = () => {
             const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
             const isFirstRow = firstRow.includes(i);
 
-            if(isFirstRow && currentCandyArrangement[i] === '') {
+            if(isFirstRow && currentCandyArrangement[i] === blank) {
                 let newRandomNumber = Math.floor(Math.random() * candyColors.length);
                 currentCandyArrangement[i] = candyColors[newRandomNumber];
             }
 
-            if((currentCandyArrangement[i + boardWidth]) === '') {
+            if((currentCandyArrangement[i + boardWidth]) === blank) {
                 currentCandyArrangement[i + boardWidth] = currentCandyArrangement[i];
-                currentCandyArrangement[i] = '';
+                currentCandyArrangement[i] = blank;
             }
         }
     }
@@ -112,11 +126,9 @@ const App = () => {
     const dragEnd = (e) => {
         const candyBeingDraggedId = parseInt(candyBeingDragged.getAttribute('data-id'));
         const candyBeingReplacedId = parseInt(candyBeingReplaced.getAttribute('data-id'));
-        console.log(candyBeingDraggedId);
-        console.log(candyBeingReplacedId);
 
-        currentCandyArrangement[candyBeingReplacedId] = candyBeingDragged.style.backgroundColor;
-        currentCandyArrangement[candyBeingDraggedId] = candyBeingReplaced.style.backgroundColor;
+        currentCandyArrangement[candyBeingReplacedId] = candyBeingDragged.getAttribute('src');
+        currentCandyArrangement[candyBeingDraggedId] = candyBeingReplaced.getAttribute('src');
 
         const validMoves = [
             candyBeingDraggedId - 1,
@@ -136,8 +148,8 @@ const App = () => {
             setCandyBeingDragged(null);
             setCandyBeingReplaced(null);
         } else {
-            currentCandyArrangement[candyBeingReplacedId] = candyBeingReplaced.style.backgroundColor;
-            currentCandyArrangement[candyBeingDraggedId] = candyBeingDragged.style.backgroundColor;
+            currentCandyArrangement[candyBeingReplacedId] = candyBeingReplaced.getAttribute('src');
+            currentCandyArrangement[candyBeingDraggedId] = candyBeingDragged.getAttribute('src');
             setCurrentCandyArrangement([...currentCandyArrangement]);
         }
     }
@@ -164,7 +176,7 @@ const App = () => {
             {currentCandyArrangement.map((candyColor, index) => (
                 <img
                 key={index}
-                style={{backgroundColor: candyColor}}
+                src={candyColor}
                 alt={candyColor}
                 data-id={index}
                 draggable={true}
