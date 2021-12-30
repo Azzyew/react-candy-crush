@@ -14,16 +14,22 @@ import ts from './images/ts.png';
 import ruby from './images/ruby.png';
 import node from './images/node.png';
 import react from './images/react.png';
+import brunoRed from './images/brunoRed.png';
+import brunoOrange from './images/brunoOrange.png';
+import brunoYellow from './images/brunoYellow.png';
+import brunoGreen from './images/brunoGreen.png';
+import brunoBlue from './images/brunoBlue.png';
+import brunoPurple from './images/brunoPurple.png';
 import blank from './images/blank.png';
 
 const boardWidth = 8;
 const candyColors = [
-  ruby,
-  html,
-  js,
-  node,
-  ts,
-  react
+  brunoRed,
+  brunoOrange,
+  brunoYellow,
+  brunoGreen,
+  brunoBlue,
+  brunoPurple
 ]
 
 const App = () => {
