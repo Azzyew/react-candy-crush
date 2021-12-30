@@ -8,16 +8,22 @@ import orangeCandy from './images/orange-candy.png'
 import purpleCandy from './images/purple-candy.png'
 import redCandy from './images/red-candy.png'
 import yellowCandy from './images/yellow-candy.png'
-import blank from './images/blank.png'
+import html from './images/html.png';
+import js from './images/js.png';
+import ts from './images/ts.png';
+import ruby from './images/ruby.png';
+import node from './images/node.png';
+import react from './images/react.png';
+import blank from './images/blank.png';
 
 const boardWidth = 8;
 const candyColors = [
-  Vi,
-  orangeCandy,
-  Jinx,
-  greenCandy,
-  blueCandy,
-  purpleCandy
+  ruby,
+  html,
+  js,
+  node,
+  ts,
+  react
 ]
 
 const App = () => {
@@ -37,6 +43,35 @@ const App = () => {
             setCurrentCandyArrangement(randomCandyArrangement);
     }
 
+    const checkColumnOfFive = () => {
+        for (let i = 0; i <= 39; i++) {
+            const columnOfFive = [i, i + boardWidth, i + boardWidth * 2, i + boardWidth * 3, i + boardWidth * 4];
+            const assignedCandy = currentCandyArrangement[i];
+            const isBlank = currentCandyArrangement[i] === blank;
+
+            if(columnOfFive.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                columnOfFive.forEach(candy => currentCandyArrangement[candy] = blank);
+                return true;
+            }
+        }
+    }
+
+    const checkRowOfFive = () => {
+        for (let i = 0; i < 64; i++) {
+            const rowOfFive = [i, i + 1, i + 2, i + 3, i + 4];
+            const assignedCandy = currentCandyArrangement[i];
+            const invalidCandy = [4, 5, 6, 7, 12, 13, 14, 15, 20, 21, 22, 23, 28, 29, 30, 31, 36, 37, 38, 39, 44, 45, 46, 47, 52, 53, 54, 55, 61, 62, 63, 64];
+            const isBlank = currentCandyArrangement[i] === blank;
+
+            if (invalidCandy.includes(i)) continue
+
+            if(rowOfFive.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                rowOfFive.forEach(candy => currentCandyArrangement[candy] = blank);
+                return true;
+            }
+        }
+    }
+
     const checkColumnOfFour = () => {
         for (let i = 0; i <= 39; i++) {
             const columnOfFour = [i, i + boardWidth, i + boardWidth * 2, i + boardWidth * 3];
@@ -52,7 +87,7 @@ const App = () => {
 
     const checkRowOfFour = () => {
         for (let i = 0; i < 64; i++) {
-            const rowOfFour = [i, i + 1, i + 2];
+            const rowOfFour = [i, i + 1, i + 2, i + 3];
             const assignedCandy = currentCandyArrangement[i];
             const invalidCandy = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64];
             const isBlank = currentCandyArrangement[i] === blank;
@@ -159,15 +194,17 @@ const App = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
+        checkColumnOfFive();
+        checkRowOfFive();
         checkColumnOfFour();
-        checkColumnOfThree();
         checkRowOfFour();
+        checkColumnOfThree();
         checkRowOfThree();
         moveCandyToSquareBelow();
         setCurrentCandyArrangement([...currentCandyArrangement]);
     }, 100);
     return () => clearInterval(timer);
-  }, [checkColumnOfFour, checkColumnOfThree, checkRowOfFour, checkRowOfThree, moveCandyToSquareBelow, currentCandyArrangement])
+  }, [checkColumnOfFive, checkRowOfFive, checkColumnOfFour, checkColumnOfThree, checkRowOfFour, checkRowOfThree, moveCandyToSquareBelow, currentCandyArrangement])
 
   return (
     <div className="App">
