@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Scoreboard from './components/Scoreboard';
 import './App.css';
 import Vi from './images/Vi.png';
 import Jinx from './images/Jinx.png';
@@ -8,12 +9,6 @@ import orangeCandy from './images/orange-candy.png'
 import purpleCandy from './images/purple-candy.png'
 import redCandy from './images/red-candy.png'
 import yellowCandy from './images/yellow-candy.png'
-import html from './images/html.png';
-import js from './images/js.png';
-import ts from './images/ts.png';
-import ruby from './images/ruby.png';
-import node from './images/node.png';
-import react from './images/react.png';
 import brunoRed from './images/brunoRed.png';
 import brunoOrange from './images/brunoOrange.png';
 import brunoYellow from './images/brunoYellow.png';
@@ -38,7 +33,7 @@ const App = () => {
     const [candyBeingDragged, setCandyBeingDragged] = useState(null);
     const [candyBeingReplaced, setCandyBeingReplaced] = useState(null);
 
-    const [currentScore, setCurrentScore] = useState();
+    const [currentScore, setCurrentScore] = useState(0);
 
     const createBoard = () => {
         const randomCandyArrangement = [];
@@ -85,6 +80,7 @@ const App = () => {
             const isBlank = currentCandyArrangement[i] === blank;
 
             if(columnOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                setCurrentScore((score) => score + 4);
                 columnOfFour.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
@@ -101,6 +97,7 @@ const App = () => {
             if (invalidCandy.includes(i)) continue
 
             if(rowOfFour.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                setCurrentScore((score) => score + 4);
                 rowOfFour.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
@@ -114,6 +111,7 @@ const App = () => {
             const isBlank = currentCandyArrangement[i] === blank;
 
             if(columnOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                setCurrentScore((score) => score + 3);
                 columnOfThree.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
@@ -130,6 +128,7 @@ const App = () => {
             if (invalidCandy.includes(i)) continue
 
             if(rowOfThree.every(candy => currentCandyArrangement[candy] === assignedCandy && !isBlank)){
+                setCurrentScore((score) => score + 3);
                 rowOfThree.forEach(candy => currentCandyArrangement[candy] = blank);
                 return true;
             }
@@ -214,6 +213,10 @@ const App = () => {
 
   return (
     <div className="App">
+        <h1  className="warning">Not available on tablets and/or smartphones</h1>
+        <div className="scoreboard">
+            <Scoreboard score={currentScore}/>
+        </div>
         <div className="board">
             {currentCandyArrangement.map((candyColor, index) => (
                 <img
