@@ -18,14 +18,23 @@ import brunoPurple from './images/brunoPurple.png';
 import blank from './images/blank.png';
 
 const boardWidth = 8;
+// const candyColors = [
+//   brunoRed,
+//   brunoOrange,
+//   brunoYellow,
+//   brunoGreen,
+//   brunoBlue,
+//   brunoPurple
+// ]
 const candyColors = [
-  brunoRed,
-  brunoOrange,
-  brunoYellow,
-  brunoGreen,
-  brunoBlue,
-  brunoPurple
+    redCandy,
+    orangeCandy,
+    yellowCandy,
+    greenCandy,
+    blueCandy,
+    purpleCandy
 ]
+
 
 const App = () => {
 
@@ -214,7 +223,8 @@ const App = () => {
   return (
     <div className="App">
         <h1  className="warning">Not available on tablets and/or smartphones</h1>
-        <div className="scoreboard">
+        <div className='gameContainer'>
+        <div>
             <Scoreboard score={currentScore}/>
         </div>
         <div className="board">
@@ -233,6 +243,7 @@ const App = () => {
                 onDragEnd={dragEnd}
                 />
             ))}
+        </div>
         </div>
     </div>
   );

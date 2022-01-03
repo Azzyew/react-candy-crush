@@ -6,9 +6,15 @@
 
 .App {
   display: flex;
-  padding: 7% 20%;
+  flex-direction: row;
+  padding: 4% 20%;
   background-color: #f1f1f1;
   height: 100vh;
+}
+
+.gameContainer {
+  display: flex;
+  flex-flow: column wrap;
 }
 
 .board {
@@ -24,7 +30,12 @@
 }
 
 .scoreboard {
+  display: flex;
   justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #333;
+  padding-bottom: 2vh;
 }
 
 .warning {
@@ -36,6 +47,6 @@
     display: none;
   }
   .warning {
-    display: flex;
+    display: block;
   }
 }

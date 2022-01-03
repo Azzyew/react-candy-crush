@@ -1,7 +1,9 @@
+import './../App.css';
+
 const Scoreboard = ({ score }) => {
     return (
-      <div>
-        <h2>{score}</h2>
+      <div className="scoreboard">
+        <h2>Score: {score}</h2>
       </div>
     )
   }
